@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show | Data</title>
+    <link rel="stylesheet" href="style3.css">
+</head>
+<body>
+    <div id="noteCardsContainer"></div>
+    <!-- JavaScript to Fetch and Display Data -->
+
+<!-- Initialize Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase.js"></script>
+<script>
+    var firebaseConfig = {
+        apiKey: "AIzaSyD410-OHL_P1vVEDpKcQaR3jPOcjqSwBjI",
+        authDomain: "work-1bc43.firebaseapp.com",
+        databaseURL: "https://work-1bc43-default-rtdb.firebaseio.com",
+        projectId: "work-1bc43",
+        storageBucket: "work-1bc43.appspot.com",
+        messagingSenderId: "161305954826",
+        appId: "1:161305954826:web:aa9e1488a4d62d788d6df3",
+        measurementId: "G-VH43K0Y1GE"
+    };
+  
+    firebase.initializeApp(firebaseConfig);
+    var database = firebase.database();
+  </script>
+
+
+<script>
+    // Reference to the Firebase Realtime Database
+    var database = firebase.database();
+    var noteCardsContainer = document.getElementById('noteCardsContainer');
+  
+    // Function to create a note card and append it to the container
+    function createNoteCard(day, date, paragraph) {
+      var noteCard = document.createElement('div');
+      noteCard.classList.add('card-note');
+      
+      var h1 = document.createElement('h1');
+      h1.textContent = day;
+      
+      var h2 = document.createElement('h2');
+      h2.textContent = date;
+      
+      var p = document.createElement('p');
+      p.textContent = paragraph;
+      
+      noteCard.appendChild(h1);
+      noteCard.appendChild(h2);
+      noteCard.appendChild(p);
+      
+      noteCardsContainer.appendChild(noteCard);
+    }
+  
+    // Fetch data from Firebase and create note cards
+    firebase.database().ref('formData').once('value', function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+        var childData = childSnapshot.val();
+        var day = childData.day;
+        var date = childData.date;
+        var paragraph = childData.paragraph;
+  
+        // Create a note card for each entry
+        createNoteCard(day, date, paragraph);
+      });
+    });
+  </script>
+  
+</body>
+</html>
